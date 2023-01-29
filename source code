@@ -404,5 +404,59 @@ walletIntegration.removeWallet("My Wallet");
 // Get the total value of all holdings in "My Wallet"
 let walletValue = walletIntegration.getWalletValue("My Wallet");
 console.log(Total value of holdings in My Wallet: ${walletValue});
+class Portfolio {
+  constructor() {
+    this.holdings = [];
+    this.historicalData = {};
+  }
+
+  // ... other functions ...
+
+  retrieveHistoricalData(symbol, startDate, endDate) {
+    // Validate input
+    if (!symbol || !startDate || !endDate) {
+      throw new Error("Missing symbol, start date, or end date for historical data retrieval");
+    }
+
+    // Retrieve historical data from API
+    fetch(`${API_URL}/historical/${symbol}?start=${startDate}&end=${endDate}`)
+      .then(response => response.json())
+      .then(data => {
+        this.historicalData[symbol] = data;
+      })
+      .catch(error => {
+        throw new Error("Error retrieving historical data from API: " + error);
+      });
+  }
+
+  analyzeHistoricalData(symbol) {
+    // Validate input
+    if (!symbol || !this.historicalData[symbol]) {
+      throw new Error("Missing symbol or historical data for analysis");
+    }
+
+    // Perform analysis on historical data
+    let data = this.historicalData[symbol];
+    let maxPrice = Math.max(...data.map(d => d.price_usd));
+    let minPrice = Math.min(...data.map(d => d.price_usd));
+    let averagePrice = data.reduce((a, b) => a + b.price_usd, 0) / data.length;
+
+    console.log(`Historical analysis for ${symbol}:`);
+    console.log(`- Maximum price: $${maxPrice}`);
+    console.log(`- Minimum price: $${minPrice}`);
+    console.log(`- Average price: $${averagePrice}`);
+  }
+}
+
+// Example usage:
+
+// Initialize the portfolio object
+let portfolio = new Portfolio();
+
+// Retrieve historical data for Bitcoin from January 1, 2020 to December 31, 2020
+portfolio.retrieveHistoricalData("bitcoin", "2020-01-01", "2020-12-31");
+
+// Analyze the historical data for Bitcoin
+portfolio.analyzeHistoricalData("bitcoin");
 
 
