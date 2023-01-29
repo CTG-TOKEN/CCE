@@ -1,5 +1,13 @@
 # CCE
-
+# Live updates on the value of your holdings and performance over time
+# The ability to add and remove coins from your portfolio
+# Price alerts for specific coins or percentage changes
+# Historical data and charts
+# News and analysis about the crypto market
+# Integration with popular crypto wallets
+# Support for multiple exchanges
+# User-friendly interface
+# Machine learning algorithm
 Cryptocurrency is a rapidly growing and constantly evolving market, and for many people, it can be overwhelming to keep track of all the different coins, prices, trends, and news. CCE aims to simplify this process by providing a single platform that combines real-time price tracking, portfolio analysis, news and alerts, and advanced machine learning algorithms.
 
 The design of CCE is based on the needs of its users. It is intuitive, easy to use, and provides a wealth of information at a glance. With its beautiful and user-friendly interface, users can quickly monitor their portfolios, compare prices, and receive real-time updates on their investments.
