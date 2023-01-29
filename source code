@@ -42,3 +42,48 @@ let myHoldings = [
 let value = getHoldingsValue(myHoldings);
 console.log("Current value of my holdings: $" + value);
 
+// JavaScript code to track user's portfolio of cryptocurrencies
+
+const API_URL = "https://api.coinmarketcap.com/v1/ticker/";
+
+// Portfolio class to store and track user's holdings
+class Portfolio {
+    constructor() {
+        this.holdings = [];
+    }
+
+    // Add a new holding to the portfolio
+    addHolding(symbol, amount) {
+        this.holdings.push({ symbol: symbol, amount: amount });
+    }
+
+    // Remove a holding from the portfolio
+    removeHolding(symbol) {
+        this.holdings = this.holdings.filter(holding => holding.symbol !== symbol);
+    }
+
+    // Get the current value of the portfolio
+    getValue() {
+        let totalValue = 0;
+        for (let i = 0; i < this.holdings.length; i++) {
+            let coin = this.holdings[i];
+            fetch(API_URL + coin.symbol)
+                .then(response => response.json())
+                .then(data => {
+                    totalValue += data[0].price_usd * coin.amount;
+                });
+        }
+        return totalValue;
+    }
+}
+
+// Example usage
+let myPortfolio = new Portfolio();
+myPortfolio.addHolding("BTC", 2.5);
+myPortfolio.addHolding("ETH", 10);
+myPortfolio.addHolding("XRP", 5000);
+console.log("Current value of my portfolio: $" + myPortfolio.getValue());
+myPortfolio.removeHolding("XRP");
+console.log("Current value of my portfolio after removing XRP: $" + myPortfolio.getValue());
+
+
