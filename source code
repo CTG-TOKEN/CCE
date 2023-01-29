@@ -12,3 +12,33 @@ fetch(API_URL)
       console.log(`${coin.name} - ${coin.price_usd}`);
     });
   });
+
+// JavaScript code to fetch the current value of user's holdings
+
+// API endpoint to fetch prices
+const API_URL = "https://api.coinmarketcap.com/v1/ticker/";
+
+// Get the current value of the user's holdings
+function getHoldingsValue(holdings) {
+    let totalValue = 0;
+    // Iterate through the holdings and fetch the current price for each coin
+    for (let i = 0; i < holdings.length; i++) {
+        let coin = holdings[i];
+        fetch(API_URL + coin.symbol)
+            .then(response => response.json())
+            .then(data => {
+                totalValue += data[0].price_usd * coin.amount;
+            });
+    }
+    return totalValue;
+}
+
+// Example usage
+let myHoldings = [
+    { symbol: "BTC", amount: 2.5 },
+    { symbol: "ETH", amount: 10 },
+    { symbol: "XRP", amount: 5000 }
+];
+let value = getHoldingsValue(myHoldings);
+console.log("Current value of my holdings: $" + value);
+
