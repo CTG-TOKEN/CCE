@@ -312,5 +312,47 @@ class Portfolio {
         // code to check alerts and notify the user
     }
 }
+class Portfolio {
+    constructor() {
+        this.holdings = [];
+        this.API_URL = "https://api.coinmarketcap.com/v1/ticker/";
+    }
+
+    // Function to add a holding to the portfolio
+    addHolding(symbol, amount) {
+        // Validate the symbol and amount input
+        if (!symbol || !amount) {
+            throw new Error("Please provide a valid symbol and amount.");
+        }
+        if (typeof symbol !== "string") {
+            throw new Error("Symbol must be a string.");
+        }
+        if (typeof amount !== "number") {
+            throw new Error("Amount must be a number.");
+        }
+
+        // Retrieve the current price of the coin from the API
+        fetch(this.API_URL + symbol)
+            .then(response => response.json())
+            .then(data => {
+                let currentPrice = data[0].price_usd;
+                this.holdings.push({ symbol: symbol, amount: amount, price: currentPrice });
+            })
+            .catch(error => {
+                throw new Error("Error retrieving coin data from API: " + error);
+            });
+    }
+
+    // Other functions (e.g. setAlert, removeAlert, checkAlerts, etc.)...
+}
+
+// Example usage:
+try {
+    let portfolio = new Portfolio();
+    portfolio.addHolding("bitcoin", 1);
+    console.log(portfolio.holdings);
+} catch (error) {
+    console.error(error);
+}
 
 
