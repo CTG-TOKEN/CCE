@@ -1,0 +1,14 @@
+// JavaScript code to fetch current cryptocurrency prices
+
+// API endpoint to fetch prices
+const API_URL = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
+
+// Fetch data from API
+fetch(API_URL)
+  .then(response => response.json())
+  .then(data => {
+    // Iterate through the data and extract the desired information
+    data.forEach(coin => {
+      console.log(`${coin.name} - ${coin.price_usd}`);
+    });
+  });
