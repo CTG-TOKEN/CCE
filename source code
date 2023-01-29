@@ -86,4 +86,131 @@ console.log("Current value of my portfolio: $" + myPortfolio.getValue());
 myPortfolio.removeHolding("XRP");
 console.log("Current value of my portfolio after removing XRP: $" + myPortfolio.getValue());
 
+// JavaScript code to track user's portfolio of cryptocurrencies
+
+const API_URL = "https://api.coinmarketcap.com/v1/ticker/";
+
+// Portfolio class to store and track user's holdings
+class Portfolio {
+    constructor() {
+        this.holdings = [];
+    }
+
+    // Add a new holding to the portfolio
+    addHolding(symbol, amount) {
+        this.holdings.push({ symbol: symbol, amount: amount });
+        this.storeHoldings();
+    }
+
+    // Remove a holding from the portfolio
+    removeHolding(symbol) {
+        this.holdings = this.holdings.filter(holding => holding.symbol !== symbol);
+        this.storeHoldings();
+    }
+
+    // Store the current holdings in local storage
+    storeHoldings() {
+        localStorage.setItem("portfolio", JSON.stringify(this.holdings));
+    }
+
+    // Retrieve the holdings from local storage
+    retrieveHoldings() {
+        let storedHoldings = localStorage.getItem("portfolio");
+        if (storedHoldings) {
+            this.holdings = JSON.parse(storedHoldings);
+        }
+    }
+
+    // Get the current value of the portfolio
+    getValue() {
+        let totalValue = 0;
+        for (let i = 0; i < this.holdings.length; i++) {
+            let coin = this.holdings[i];
+            fetch(API_URL + coin.symbol)
+                .then(response => response.json())
+                .then(data => {
+                    totalValue += data[0].price_usd * coin.amount;
+                });
+        }
+        return totalValue;
+    }
+
+    // Set an alert for a specific coin
+    setAlert(symbol, price, alertType) {
+        if (alertType !== "price" && alertType !== "percentage") {
+            console.log("Invalid alert type. Please use 'price' or 'percentage'.");
+            return;
+        }
+        let coin = this.holdings.find(holding => holding.symbol === symbol);
+        if (!coin) {
+            console.log("Coin not found in portfolio.");
+            return;
+        }
+        let alert = {
+            symbol: symbol,
+            alertType: alertType,
+            alertPrice: price
+        };
+        coin.alert = alert;
+        this.storeHoldings();
+    }
+
+    // Remove an alert for a specific coin
+    removeAlert(symbol) {
+        let coin = this.holdings.find(holding => holding.symbol === symbol);
+        if (!coin) {
+            console.log("Coin not found in portfolio.");
+            return;
+        }
+        if (!coin.alert) {
+            console.log("Coin does not have an alert set.");
+            return;
+        }
+        delete coin.alert;
+        this.storeHoldings();
+    }
+
+    // Check alerts and notify user
+    checkAlerts() {
+        for (let i = 0; i < this.holdings.length; i++) { let coin = this.holdings[i];
+if (coin.alert) {
+fetch(API_URL + coin.symbol)
+.then(response => response.json())
+.then(data => {
+let currentPrice = data[0].price_usd;
+if (coin.alert.alertType === "price" && currentPrice >= coin.alert.alertPrice) {
+alert(`Coin ${coin.symbol} has reached ${coin.alert.alertPrice}`);
+} else if (coin.alert.alertType === "percentage") {
+let percentageChange = ((currentPrice - coin.alert.alertPrice) / coin.alert.alertPrice) * 100;
+if (percentageChange >= 0) {
+alert(`Coin ${coin.symbol} has increased by ${percentageChange}%`);
+} else {
+alert(`Coin ${coin.symbol} has decreased by ${percentageChange}%`);
+}
+}
+});
+}
+}
+
+// Initialize the portfolio object and retrieve any stored holdings
+let portfolio = new Portfolio();
+portfolio.retrieveHoldings();
+
+// Example usage:
+
+// Add a holding of 1 Bitcoin to the portfolio
+portfolio.addHolding("bitcoin", 1);
+
+// Set an alert for when Bitcoin reaches $50,000
+portfolio.setAlert("bitcoin", 50000, "price");
+
+// Remove the alert for Bitcoin
+portfolio.removeAlert("bitcoin");
+
+// Check the current value of the portfolio
+console.log(`Total portfolio value: ${portfolio.getValue()}`);
+
+// Check alerts and notify user
+portfolio.checkAlerts();
+
 
