@@ -354,5 +354,55 @@ try {
 } catch (error) {
     console.error(error);
 }
+class WalletIntegration {
+  constructor() {
+    this.wallets = {};
+  }
+
+  // Add a new wallet to the list of supported wallets
+  addWallet(name, apiKey) {
+    this.wallets[name] = apiKey;
+  }
+
+  // Remove a wallet from the list of supported wallets
+  removeWallet(name) {
+    delete this.wallets[name];
+  }
+
+  // Get the total value of all holdings in a specific wallet
+  getWalletValue(name) {
+    let value = 0;
+    if (this.wallets[name]) {
+      // Fetch the current balance of the wallet from the API
+      fetch(WALLET_API_URL + this.wallets[name])
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(coin => {
+            value += coin.amount * coin.price_usd;
+          });
+        })
+        .catch(error => {
+          throw new Error("Error retrieving wallet data from API: " + error);
+        });
+    } else {
+      throw new Error("Wallet not found: " + name);
+    }
+    return value;
+  }
+}
+
+let walletIntegration = new WalletIntegration();
+
+// Example usage:
+
+// Add a new wallet "My Wallet" with API key "abcdefg123456"
+walletIntegration.addWallet("My Wallet", "abcdefg123456");
+
+// Remove the "My Wallet" from the list of supported wallets
+walletIntegration.removeWallet("My Wallet");
+
+// Get the total value of all holdings in "My Wallet"
+let walletValue = walletIntegration.getWalletValue("My Wallet");
+console.log(Total value of holdings in My Wallet: ${walletValue});
 
 
