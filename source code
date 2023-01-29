@@ -591,5 +591,27 @@ class CCE {
 
 let cce = new CCE();
 cce.renderDashboard();
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Collect and prepare data
+data = pd.read_csv("crypto_data.csv")
+X = data[['btc_market_price', 'btc_total_bitcoins', 'btc_market_cap']]
+y = data['btc_trade_volume']
+
+# Split data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Train the model
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+
+# Make predictions on test data
+y_pred = regressor.predict(X_test)
+
+# Evaluate model performance
+score = regressor.score(X_test, y_test)
+print("Model R^2 score:", score)
 
 
