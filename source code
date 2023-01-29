@@ -212,5 +212,39 @@ console.log(`Total portfolio value: ${portfolio.getValue()}`);
 
 // Check alerts and notify user
 portfolio.checkAlerts();
+class Portfolio {
+    constructor() {
+        this.holdings = [];
+        this.API_URL = 'https://api.coinmarketcap.com/v1/ticker/';
+    }
+
+    addHolding(symbol, amount) {
+        // code to add a holding to the portfolio
+    }
+
+    removeHolding(symbol) {
+        // code to remove a holding from the portfolio
+    }
+
+    setAlert(symbol, alertPrice, alertType) {
+        // code to set an alert for a holding
+    }
+
+    removeAlert(symbol) {
+        // code to remove an alert for a holding
+    }
+
+    retrieveHoldings() {
+        // code to retrieve stored holdings from a database or local storage
+    }
+
+    getValue() {
+        // code to calculate the total value of the portfolio
+    }
+
+    checkAlerts() {
+        // code to check alerts and notify the user
+    }
+}
 
 
