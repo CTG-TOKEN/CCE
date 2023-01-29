@@ -246,5 +246,71 @@ class Portfolio {
         // code to check alerts and notify the user
     }
 }
+class Portfolio {
+    constructor() {
+        this.holdings = [];
+        this.API_URL = 'https://api.coinmarketcap.com/v1/ticker/';
+    }
+
+    addHolding(symbol, amount) {
+        if (!symbol || !amount) {
+            alert("Please enter a valid symbol and amount.");
+            return;
+        }
+        if (isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid number for the amount.");
+            return;
+        }
+
+        // code to add a holding to the portfolio
+    }
+
+    removeHolding(symbol) {
+        if (!symbol) {
+            alert("Please enter a valid symbol.");
+            return;
+        }
+
+        // code to remove a holding from the portfolio
+    }
+
+    setAlert(symbol, alertPrice, alertType) {
+        if (!symbol || !alertPrice || !alertType) {
+            alert("Please enter a valid symbol, price, and alert type.");
+            return;
+        }
+        if (isNaN(alertPrice) || alertPrice <= 0) {
+            alert("Please enter a valid number for the alert price.");
+            return;
+        }
+        if (alertType !== "price" && alertType !== "percentage") {
+            alert("Please enter a valid alert type (price or percentage).");
+            return;
+        }
+
+        // code to set an alert for a holding
+    }
+
+    removeAlert(symbol) {
+        if (!symbol) {
+            alert("Please enter a valid symbol.");
+            return;
+        }
+
+        // code to remove an alert for a holding
+    }
+
+    retrieveHoldings() {
+        // code to retrieve stored holdings from a database or local storage
+    }
+
+    getValue() {
+        // code to calculate the total value of the portfolio
+    }
+
+    checkAlerts() {
+        // code to check alerts and notify the user
+    }
+}
 
 
