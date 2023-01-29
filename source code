@@ -501,5 +501,51 @@ cce.unsubscribeToAlerts("bitcoin");
 
 // Get the current alerts
 console.log(cce.getAlerts());
+class Portfolio {
+  constructor() {
+    this.exchanges = {};
+  }
+  
+  addExchange(exchangeName, apiKey) {
+    this.exchanges[exchangeName] = new Exchange(exchangeName, apiKey);
+  }
+  
+  removeExchange(exchangeName) {
+    delete this.exchanges[exchangeName];
+  }
+  
+  getExchange(exchangeName) {
+    return this.exchanges[exchangeName];
+  }
+}
+
+class Exchange {
+  constructor(exchangeName, apiKey) {
+    this.exchangeName = exchangeName;
+    this.apiKey = apiKey;
+  }
+  
+  getHoldings() {
+    // Use the exchange's API to retrieve the user's holdings
+    // with the provided apiKey
+  }
+  
+  placeOrder(symbol, amount, type) {
+    // Use the exchange's API to place a buy or sell order for the specified symbol and amount
+    // with the provided apiKey
+  }
+}
+
+// Initialize the portfolio object and add an exchange
+let portfolio = new Portfolio();
+portfolio.addExchange("Binance", "API_KEY");
+portfolio.addExchange("Coinbase", "API_KEY");
+
+// Retrieve holdings from the Binance exchange
+let binanceHoldings = portfolio.getExchange("Binance").getHoldings();
+console.log(binanceHoldings);
+
+// Place a buy order for 0.1 BTC on Coinbase
+portfolio.getExchange("Coinbase").placeOrder("BTC", 0.1, "buy");
 
 
