@@ -458,5 +458,48 @@ portfolio.retrieveHistoricalData("bitcoin", "2020-01-01", "2020-12-31");
 
 // Analyze the historical data for Bitcoin
 portfolio.analyzeHistoricalData("bitcoin");
+class CCE {
+    constructor() {
+        this.alerts = {};
+    }
+
+    subscribeToAlerts(coin) {
+        if (!this.alerts[coin]) {
+            this.alerts[coin] = [];
+        }
+        fetch(NEWS_API_URL + coin)
+            .then(response => response.json())
+            .then(data => {
+                this.alerts[coin] = data;
+            })
+            .catch(error => {
+                console.log("Error subscribing to alerts for " + coin + ": " + error);
+            });
+    }
+
+    unsubscribeToAlerts(coin) {
+        if (this.alerts[coin]) {
+            delete this.alerts[coin];
+        }
+    }
+
+    getAlerts() {
+        return this.alerts;
+    }
+}
+
+// Example usage:
+
+// Create an instance of the CCE class
+let cce = new CCE();
+
+// Subscribe to alerts for Bitcoin
+cce.subscribeToAlerts("bitcoin");
+
+// Unsubscribe from alerts for Bitcoin
+cce.unsubscribeToAlerts("bitcoin");
+
+// Get the current alerts
+console.log(cce.getAlerts());
 
 
